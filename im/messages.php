@@ -9,7 +9,11 @@
     function get_messages() {
         $user_id = $_GET['user_id'];
         $other_id = $_GET['other_id'];
-        $firstime = $_GET['firstime'];
+        $prev_msg_id = $_GET['prev_msg_id'];
+        if(isset($_GET['firstime']))
+            $firstime = $_GET['firstime'];
+        else
+            $firstime = "false";
         $result = null;
         $previous_message_id = $_GET['prev_msg_id'];
 
@@ -29,7 +33,7 @@
     // Gets any new messages for the user from other user.
     function get_new_messages($user_id, $other_id, $prev_msg_id) {
         global $db_connection;
-        $query = "SELECT * FROM chat_messages WHERE (sender_id = $user_id AND reciever_id = $other_id ";
+        $query = "SELECT * FROM messages WHERE (sender_id = $user_id AND reciever_id = $other_id ";
         $query .= "OR sender_id=$other_id AND reciever_id=$user_id) ";
         $query .= " AND id > $prev_msg_id";
 

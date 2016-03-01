@@ -8,6 +8,7 @@ function ImInstance(user_id, other_id) {
     this.boxId = user_id + '_' + other_id;
     this.firstime = true;
     this.prev_msg_id = -1;
+    this.fetch_delay = 2;
     console.log("Chat instance created : " + this.user_id + ", " + this.other_id );
 
     // Init the chat instance, i.e. add event handler codes and stuffs.
@@ -24,6 +25,13 @@ function ImInstance(user_id, other_id) {
         var _this = this;
         title.addEventListener('click', function() {
             _this.toggleInstance.call(_this);
+        });
+
+        // Get the send button.
+        var _this = this;
+        var sendButton = newBox.querySelector('#send-message');
+        sendButton.addEventListener('click', function() {
+            _this.sendMessage.call(_this);
         });
 
         this.getMessages();
@@ -66,7 +74,24 @@ function ImInstance(user_id, other_id) {
                 // Got new messages from the server.
                 console.log(request.responseText);
                 var data = JSON.parse(request.responseText);
+
+                // Updates the prev id to match the new messages.
+                console.log("Message length: " + data['messages'].length);
+                if(data['messages'].length > 0) {
+                    _this.prev_msg_id = data['messages'][ data['messages'].length-1 ]['id'];
+                    if(_this.fetch_delay != 2) _this.fetch_delay -= 1;
+                }
+                else {
+                    if(_this.fetch_delay != 15)
+                    _this.fetch_delay += 1;
+                    console.log('here');
+                }
+
+                console.log("Activity now : " + _this.fetch_delay);
                 _this.addMessages.call(_this, data['messages']);
+                setTimeout( function() {
+                    _this.getMessages.call(_this);
+                }, _this.fetch_delay * 1000);
             }
         };
         console.log(urlForMessages);
@@ -93,5 +118,29 @@ function ImInstance(user_id, other_id) {
         }
     };
 
+    // Sends the chat message.
+    this.sendMessage = function() {
+        var instance = this.getImInstance();
+        var messageText = instance.querySelector(".message-text");
+        console.log(messageText);
+        var message = messageText.value;
+        var urlToRequest = "/chatcraft/im/add_message.php";
+        var params = "";
+        params += "user_id=" + this.user_id;
+        params += "&other_id=" + this.other_id;
+        params += "&message=" + message;
+
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+            if(request.readyState == 4) {
+                console.log(request.responseText);
+            }
+        };
+        request.open("POST", urlToRequest, true);
+        console.log(encodeURI(params));
+        request.send(encodeURI(params));
+    };
+
+    // Initializes the chat instance.
     this.init();
 }
