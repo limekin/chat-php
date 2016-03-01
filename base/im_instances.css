@@ -1,0 +1,50 @@
+#im-instances {
+
+    position: fixed;
+
+
+    bottom: 0;
+    right: 155px;
+}
+
+
+/* =========================== Styles for a single im instance (a single chat box). */
+.im-instance {
+    width: 200px;
+    display: inline-block;
+    border: 1px solid silver;
+}
+
+.im-instance .title {
+    background-color: orange;
+    text-align: center;
+    padding: 5px 0px;
+}
+.im-instance .title:hover {
+    cursor: pointer;
+}
+.im-instance .message-list {
+    height: 250px;
+    padding: 0px 5px;
+    color: grey;
+    font-size: .9em;
+    font-family: sans-serif;
+}
+.im-instance .username {
+    color: dodgerblue;
+}
+.im-instance .message-entry {
+}
+.im-instance .im-message {
+    margin-top: 5px;
+}
+.im-instance .message-text {
+    width: 150px;
+    margin:0px;
+    padding: 0px;
+}
+.im-instance #send-message {
+    margin: 0px;
+    padding: 0px;
+    width: 42px;
+}

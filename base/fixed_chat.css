@@ -1,0 +1,28 @@
+/* Styles for recent chats. ---------------------------------------------------------------------- */
+#recent-chats {
+   background-color: white;
+   border: 1px solid grey;
+   display: inline-block;
+
+   position: fixed;
+   bottom: 0;
+   right: 0;
+
+}
+
+#recent-chats .title {
+    width: 150px;
+    padding: 5px 0px;
+    background-color: lightgrey;
+
+    text-align: center;
+}
+#recent-chats .title:hover {
+    cursor: pointer;
+}
+
+#recent-chats .list {
+    height: 250px;
+    display: none;
+    background-color: #303030;
+}
